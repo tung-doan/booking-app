@@ -1,0 +1,22 @@
+# General
+node_modules/
+build/
+dist/
+.env
+*.log
+
+# Specific to your project structure
+api/node_modules/
+api/package-lock.json
+client/node_modules/
+client/package-lock.json
+client/dist/
+client/.vite/
+uploads/
+
+# IDE and editors
+.vscode/
+.idea/
+
+# Dependency locks
+yarn.lock
