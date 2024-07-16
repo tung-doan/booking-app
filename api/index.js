@@ -8,8 +8,10 @@ var bcryptsalt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 const jwtSecret = 'ohsdfoajdoifjaodjfaojfoad'
 const cookieParser = require('cookie-parser')
-
+const multer = require('multer')
+const fs = require('fs')
 const User = require('./model/user.js');
+const Place = require('./model/place.js');
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGOURL)
 const imagedownloader = require('image-downloader')
@@ -89,6 +91,95 @@ app.post('/upload-by-link', async (req, res) => {
         dest: __dirname + '/uploads/' + newname
     })
     res.json(newname)
+})
+
+const multermiddleware = multer({ dest: 'uploads/' });
+app.post('/upload', multermiddleware.array('Photos', 100), (req, res) => {
+    const uploadedfiles = []
+    for (let i = 0; i < req.files.length; i++) {
+        const { path, originalname } = req.files[i];
+        console.log(req.files[i]);
+        const part = originalname.split('.');
+        const tail = part[part.length - 1];
+        const updatedpath = path + '.' + tail;
+        fs.renameSync(path, updatedpath)
+        uploadedfiles.push(updatedpath.replace('uploads\\', ''))
+    }
+    res.json(uploadedfiles)
+})
+
+app.post('/places', (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+        jwt.verify(token, jwtSecret, {}, async (err, decoded) => {
+            const { Title, Address, AddPhoto, Description, ExtraInfo, Perk, CheckIn, CheckOut, MaxGuests, price } = req.body;
+            const userinfo = await Place.create({
+                owner: decoded.id,
+                title: Title,
+                address: Address,
+                photos: AddPhoto,
+                description: Description,
+                perks: Perk,
+                extraInfo: ExtraInfo,
+                checkIn: CheckIn,
+                checkOut: CheckOut,
+                maxGuests: MaxGuests,
+                price: price
+            })
+            res.json(userinfo)
+        })
+    }
+    else {
+        res.status(422).json('not logged in')
+    }
+})
+
+app.get('/user-places', async (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, decoded) => {
+        res.json(await Place.find({ owner: decoded.id }))
+    })
+})
+
+app.get('/places/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return;
+    }
+    res.json(await Place.findById(id))
+})
+
+app.put('/places', async (req, res) => {
+    const { token } = req.cookies;
+    const { id, Title, Address, AddPhoto, Description, ExtraInfo, Perk, CheckIn, CheckOut, MaxGuests, price } = req.body;
+    const userinfo = await Place.findById(id);
+    jwt.verify(token, jwtSecret, {}, async (err, decoded) => {
+        if (decoded.id === userinfo.owner.toString()) {
+            userinfo.set({
+                title: Title,
+                address: Address,
+                photos: AddPhoto,
+                description: Description,
+                perks: Perk,
+                extraInfo: ExtraInfo,
+                checkIn: CheckIn,
+                checkOut: CheckOut,
+                maxGuests: MaxGuests,
+                price: price
+            })
+            await userinfo.save();
+            res.json(userinfo)
+        }
+        else {
+            res.status(422).json('not authorized')
+        }
+    })
+})
+
+app.get('/places', async (req, res) => {
+    const userdoc = await Place.find();
+    if(userdoc){res.json(await Place.find())}
+    else{res.json('no places')}
 })
 
 app.post('/logout', (req, res) => {

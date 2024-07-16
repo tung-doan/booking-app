@@ -10,6 +10,10 @@ textarea {
   @apply border w-full mt-2 p-2 rounded-2xl;
 }
 
+textare{
+   height: 140px;
+}
+
 button.primary{
   @apply bg-primary p-2 w-full text-white rounded-2xl mt-2;
 }
