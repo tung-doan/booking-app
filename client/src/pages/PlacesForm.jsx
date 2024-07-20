@@ -103,11 +103,11 @@ export default function Placesform() {
                 <div className="grid gap-2 sm:grid-cols-3">
                     <label className=" p-3 border-2 rounded-2xl" >
                         <h3>Check In</h3>
-                        <input value={CheckIn} onChange={ev => setCheckIn(ev.target.value)} type="string" placeholder="00:00" />
+                        <input value={CheckIn} onChange={ev => setCheckIn(ev.target.value)} type="string" placeholder="00:00 AM" />
                     </label>
                     <label className=" p-3 border-2 rounded-2xl" >
                         <h3>Check Out</h3>
-                        <input value={CheckOut} onChange={ev => setCheckOut(ev.target.value)} type="string" placeholder="00:00" />
+                        <input value={CheckOut} onChange={ev => setCheckOut(ev.target.value)} type="string" placeholder="11:59 PM" />
                     </label>
                     <label className=" p-3 border-2 rounded-2xl" >
                         <h3>Max number of guests</h3>

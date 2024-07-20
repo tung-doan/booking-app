@@ -1,4 +1,5 @@
 export default function Perks({ value, onchange }) {
+    console.log(value)
     function handlerselect(ev) {
         const { checked, name } = ev.target;
         if (checked) {

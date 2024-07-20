@@ -12,6 +12,7 @@ const multer = require('multer')
 const fs = require('fs')
 const User = require('./model/user.js');
 const Place = require('./model/place.js');
+const Booking = require('./model/booking.js');
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGOURL)
 const imagedownloader = require('image-downloader')
@@ -45,6 +46,7 @@ app.post('/register', async (req, res) => {
                 email,
                 password: bcrypt.hashSync(password, bcryptsalt)
             })
+            res.json(userdoc)
         }
     } catch (err) {
         res.status(422).json(err)
@@ -53,7 +55,6 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
     const UserDoc = await User.findOne({ email: email })
     if (UserDoc) {
         if (bcrypt.compareSync(password, UserDoc.password)) {
@@ -62,7 +63,7 @@ app.post('/login', async (req, res) => {
             })
         }
         else {
-            res.status(422).json('wrong password')
+            res.status(422).json('incorrect email or password')
         }
     }
 
@@ -98,7 +99,7 @@ app.post('/upload', multermiddleware.array('Photos', 100), (req, res) => {
     const uploadedfiles = []
     for (let i = 0; i < req.files.length; i++) {
         const { path, originalname } = req.files[i];
-        console.log(req.files[i]);
+     
         const part = originalname.split('.');
         const tail = part[part.length - 1];
         const updatedpath = path + '.' + tail;
@@ -178,8 +179,46 @@ app.put('/places', async (req, res) => {
 
 app.get('/places', async (req, res) => {
     const userdoc = await Place.find();
-    if(userdoc){res.json(await Place.find())}
-    else{res.json('no places')}
+    if (userdoc) { res.json(await Place.find()) }
+    else { res.json('no places') }
+})
+
+app.post('/booking', async (req, res) => {
+    const { token } = req.cookies;
+    let userid;
+    jwt.verify(token, jwtSecret, {}, async (err, decoded) => {
+        userid = decoded.id;
+    })
+    
+    const { place, checkIn, checkOut, name, phone, price } = req.body;
+    console.log(price)
+    await Booking.create({
+        place: place,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        name: name,
+        phone: phone,
+        price: price,
+        user: userid
+    }).then(data => {
+        res.json(data)
+    }).catch(err => {
+        res.status(422).json(err)
+    })
+})
+
+app.get('/bookings', async (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, decoded) => {
+        if (err) throw err;
+        res.json(await Booking.find({ user: decoded.id }).populate('place'))
+    })
+})
+
+app.delete('/bookings/:id', async (req, res) => {
+    const {id} = req.params;
+    await Booking.findByIdAndDelete(id)
+    res.json(await Booking.find().populate('place'))
 })
 
 app.post('/logout', (req, res) => {

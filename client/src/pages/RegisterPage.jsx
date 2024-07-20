@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
@@ -6,6 +6,7 @@ export default function RegisterPage() {
     const [name, setname] = useState('');
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
+    const [redirect, setredirect] = useState(false);
     const registerUser = async (ev) => {
         ev.preventDefault();
         await axios.post('/register', {
@@ -15,14 +16,18 @@ export default function RegisterPage() {
         }
         ).then(res => {
             alert('registration successful')
-            console.log(res.data)
+            setredirect(true)
         }
     ).catch(err => {
             if(err.response.status === 422) alert(err.response.data)
             else{
             alert('registration failed please try agian later')
             console.log(err.response)} });
-    
+                
+    }
+
+    if(redirect){
+        return <Navigate to={'/login'} />
     }
     return (
         <div className="mt-4 flex items-center justify-center grow">
