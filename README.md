@@ -48,6 +48,9 @@ cd client
 npm install
 npm run dev
 ```
+## Setting Up Environment Variables
+
+After cloning the project, you need to create a `.env` file and provide the necessary environment variables.
 
 ## Contact Information
 
