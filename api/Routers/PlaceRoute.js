@@ -9,6 +9,11 @@ require('dotenv').config();
 const jwtSecret = process.env.JWTSECRET;
 const Place = require('../model/place.js');
 
+const uploadDir = 'uploads/';
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 
 router.post('/upload-by-link', async (req, res) => {

@@ -1,4 +1,4 @@
 DATABASEURL = YOUR MONGOURL 
 CLIENTURL = your client URL
-PHOTODEST = the path where you put photos
+PHOTODEST = the path where you put photos (find directory uploads )
 JWTSECRET = your jwtsecret (a string)
