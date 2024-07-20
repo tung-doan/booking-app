@@ -34,7 +34,7 @@ export default function BookingPage() {
 
                         <div className=" flex bg-gray-300 w-48 h-48" >
                             {booking.place.photos.length > 0 &&
-                                <img src={'http://localhost:4000/uploads/' + booking.place.photos[0]} alt="image" className=" object-cover w-full h-full" ></img>
+                                <img src={import.meta.env.VITE_PHOTOS + booking.place.photos[0]} alt="image" className=" object-cover w-full h-full" ></img>
                             }
                         </div>
                         <div className="grow-0 shrink flex flex-col gap-2 ">

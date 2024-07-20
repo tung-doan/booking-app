@@ -16,7 +16,7 @@ export default function Indexpage() {
                 <Link to={'/place/' + place._id} key={place.owner} className="">
                     <div className="rounded-2xl mb-2">
                         {place.photos?.[0] &&
-                            <img className="object-cover rounded-2xl aspect-square" src={'http://localhost:4000/uploads/' + place.photos[0]} alt="image" ></img>
+                            <img className="object-cover rounded-2xl aspect-square" src={import.meta.env.VITE_PHOTOS + place.photos[0]} alt="image" ></img>
                         }
                     </div>
                     <div>

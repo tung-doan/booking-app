@@ -12,9 +12,10 @@ import SpecificPlace from "./pages/SpecificPlace"
 import BookingPage from "./pages/BookingPage"
 import SingleBookingPage from "./pages/SingleBookingPage"
 
-axios.defaults.baseURL = 'http://localhost:4000'
+// axios.defaults.baseURL = process.env.VITE_REACT_APP_BASEURL
 axios.defaults.withCredentials = true
-
+axios.defaults.baseURL = import.meta.env.VITE_BASEURL;
+console.log(import.meta.env.VITE_BASEURL)
 function App() {
   return (
     <UserContextProvider>
