@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const User = require('../model/user');
-const cookieParser = require('cookie-parser');
 var bcrypt = require('bcryptjs');
 var bcryptsalt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
