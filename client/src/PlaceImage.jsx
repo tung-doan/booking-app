@@ -17,7 +17,7 @@ export default function PlaceImage({place}){
                         </button>
 
                         {place.photos.length > 0 && place.photos.map(photo => (
-                            <img src={'http://localhost:4000/uploads/' + photo} alt="image" className="aspect-square object-cover w-3/4 m-4"></img>
+                            <img key={photo} src={'http://localhost:4000/uploads/' + photo} alt="image" className="aspect-square object-cover w-3/4 m-4"></img>
                         ))}
                     </div>
                 </div>

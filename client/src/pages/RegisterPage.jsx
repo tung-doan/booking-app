@@ -14,7 +14,7 @@ export default function RegisterPage() {
             email,
             password
         }
-        ).then(res => {
+        ).then(() => {
             alert('registration successful')
             setredirect(true)
         }
@@ -23,7 +23,6 @@ export default function RegisterPage() {
             else{
             alert('registration failed please try agian later')
             console.log(err.response)} });
-                
     }
 
     if(redirect){

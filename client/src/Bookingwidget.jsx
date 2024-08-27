@@ -26,8 +26,7 @@ async function handleBook() {
             phone,
             place: place._id,
             price:  place.price * numsofnight
-        }).then(response => {
-            const bookId = response.data._id;
+        }).then(() => {
             setredirect(true);
         });
     } else {
