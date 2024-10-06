@@ -18,3 +18,52 @@ textare{
 button.primary{
   @apply bg-primary p-2 w-full text-white rounded-2xl mt-2;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.pagination-page {
+  list-style: none;
+  margin: 0 5px;
+}
+
+.pagination-link {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination-link:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination-active .pagination-link {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+}
+
+.pagination-prev,
+.pagination-next {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination-prev:hover,
+.pagination-next:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination-break {
+  margin: 0 5px;
+  cursor: default;
+}
